@@ -1,9 +1,9 @@
 import 'package:flame/game.dart';
+import 'package:flappy_ember/game.dart';
 import 'package:flutter/material.dart';
 
-import 'game.dart';
-
 void main() {
-  final game = FlappyEmber();
-  runApp(GameWidget(game: game));
+  runApp(
+    GameWidget(game: FlappyEmber()),
+  );
 }
