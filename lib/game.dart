@@ -14,8 +14,7 @@ class FlappyEmber extends FlameGame with TapDetector, HasCollisionDetection {
   late Player player;
   final _random = Random();
   double speed = FlappyEmber.initialSpeed;
-  double _timeSinceBox = 0;
-  final _boxInterval = 2;
+  final _boxInterval = 2.0;
   bool _gameOver = false;
   bool get isGameOver => _gameOver;
 
@@ -31,12 +30,7 @@ class FlappyEmber extends FlameGame with TapDetector, HasCollisionDetection {
     if (_gameOver) {
       return;
     }
-    _timeSinceBox += dt;
     speed += 10 * dt;
-    if (_timeSinceBox > _boxInterval) {
-      add(BoxStack(isBottom: _random.nextBool()));
-      _timeSinceBox = 0;
-    }
   }
 
   void gameOver() {
@@ -55,16 +49,14 @@ class FlappyEmber extends FlameGame with TapDetector, HasCollisionDetection {
   @override
   void onTap() {
     if (_gameOver) {
-      restart();
-    } else {
-      player.fly();
+      return restart();
     }
+    player.fly();
   }
 
   void restart() {
     removeAll(children);
     _gameOver = false;
-    _timeSinceBox = 0;
     speed = initialSpeed;
     removeAll(children);
     addAll([
@@ -73,6 +65,11 @@ class FlappyEmber extends FlameGame with TapDetector, HasCollisionDetection {
       ScoreComponent(),
       player = Player(),
       ScreenHitbox(),
+      TimerComponent(
+        repeat: true,
+        period: _boxInterval,
+        onTick: () => add(BoxStack(isBottom: _random.nextBool())),
+      )
     ]);
   }
 }
