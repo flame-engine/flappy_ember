@@ -35,24 +35,28 @@ class Player extends SpriteAnimationComponent
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
-    if (!_isDying) {
-      _isDying = true;
-      addAll([
-        ScaleEffect.to(
-          Vector2(0.0, 0.0),
-          EffectController(
-            duration: 2.0,
-            curve: Curves.bounceInOut,
-          ),
-        ),
-        RotateEffect.by(
-          9,
-          EffectController(
-            duration: 2.0,
-          ),
-        )..onComplete = gameRef.gameOver,
-      ]);
+    die();
+  }
+
+  void die() {
+    if (_isDying) {
+      return;
     }
+
+    _isDying = true;
+    addAll([
+      ScaleEffect.to(
+        Vector2(0.0, 0.0),
+        EffectController(
+          duration: 2.0,
+          curve: Curves.bounceInOut,
+        ),
+      ),
+      RotateEffect.by(
+        9,
+        EffectController(duration: 2.0),
+      )..onComplete = gameRef.gameOver,
+    ]);
   }
 
   void fly() {
